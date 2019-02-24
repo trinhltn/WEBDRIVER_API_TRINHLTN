@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib/selenium-server-standalone-2.53.1.jar</name>
-			<type>1</type>
-			<location>D:/AutoTest/Software/selenium-server-standalone-2.53.1.jar</location>
-		</link>
-	</linkedResources>
 </projectDescription>

@@ -27,7 +27,19 @@ public class Topic_01_CheckEnvironment {
 	}
 	
 	@Test
-	public void TC_01_CheckTitle() {
+	public void TC_02_CheckTitle() {
+		String homePageTitle = driver.getTitle();
+		Assert.assertEquals(homePageTitle, "Home page");
+	}
+	
+	@Test
+	public void TC_03_CheckUrl() {
+		String homePageUrl = driver.getCurrentUrl();
+		Assert.assertEquals(homePageUrl, "http://live.guru99.com/");
+	}
+	
+	@Test
+	public void TC_04_CheckTitle() {
 		String homePageTitle = driver.getTitle();
 		Assert.assertEquals(homePageTitle, "Home page");
 	}

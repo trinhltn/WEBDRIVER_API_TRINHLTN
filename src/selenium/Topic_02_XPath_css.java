@@ -103,6 +103,44 @@ public class Topic_02_XPath_css {
 		
 	}
 	
+	public int randomNumber() {
+		Random rand = new Random();
+		return rand.nextInt(10000);
+	}
+	
+	@Test
+	public void TC_06_Cach02_Create_An_Account() throws InterruptedException {
+		
+		//Cách 2: Tạo hàm randomNumber()
+		
+		driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
+		driver.findElement(By.xpath("//a[contains(@title,'Create an Account')]")).click();
+		driver.findElement(By.xpath("//input[@id='firstname']")).sendKeys("Trinh");
+		driver.findElement(By.xpath("//input[@id='middlename']")).sendKeys("Thi");
+		driver.findElement(By.xpath("//input[@id='lastname']")).sendKeys("Le");
+		
+		String email = "automation" + randomNumber() + "@gmail.com";
+		
+		driver.findElement(By.xpath("//input[@id='email_address']")).sendKeys(email);
+		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("123123123");
+		driver.findElement(By.xpath("//input[@id='confirmation']")).sendKeys("123123123");
+		driver.findElement(By.xpath("//button[@title='Register']")).click();
+		
+		//verify message
+		String success_msg = driver.findElement(By.xpath("//li[@class = 'success-msg']//span")).getText();
+		Assert.assertEquals(success_msg, "Thank you for registering with Main Website Store.");
+		
+		//logout
+		driver.findElement(By.xpath("//div[@class='page-header-container']//span[text()='Account']")).click();
+		driver.findElement(By.xpath("//a[@title='Log Out']")).click();
+		
+		Thread.sleep(5000);
+		//return homePage
+		String homePageTitle = driver.getTitle();
+		Assert.assertEquals(homePageTitle, "Home page");
+		
+	}
+	
 	@AfterClass
 	public void afterTest() {
 		driver.quit();

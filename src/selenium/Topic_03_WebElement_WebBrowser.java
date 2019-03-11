@@ -141,7 +141,38 @@ public class Topic_03_WebElement_WebBrowser {
 	  else System.out.println("ButtonDisable is disabled");
 
   }
+ 
+  public boolean CheckEnabled(By Value) {
+	  if(driver.findElement(Value).isEnabled()) {
+		  System.out.println("Element <"+Value+"> is enabled");
+		  return true;
+	  }
+	  else {
+		  System.out.println("Element <"+Value+"> is disabled");
+		  return false;
+	  }
+  }
   
+  @Test
+  public void TC_02_cach_02() {
+	  //use CheckEnabled()
+	  CheckEnabled(emailTextbox);
+	  CheckEnabled(ageUnder18Radio);
+	  CheckEnabled(educationTextArea);
+	  CheckEnabled(jobRole01);
+	  CheckEnabled(interestsDevelopment);
+	  CheckEnabled(slider01);
+	  CheckEnabled(buttonEnable);
+	  CheckEnabled(password);
+	  CheckEnabled(ageRadioIsDisabled);
+	  CheckEnabled(biography);
+	  CheckEnabled(jobRole02);
+	  CheckEnabled(biography);
+	  CheckEnabled(interestsCheckboxDisable);
+	  CheckEnabled(slider02);
+	  CheckEnabled(buttonDisabled);
+	  
+  }
   @Test
   public void TC_03_Check_Element_Is_Selected() throws InterruptedException {
 	  //step 02: Click chọn Age (Under 18)/ Interests (Development)

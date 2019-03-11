@@ -19,14 +19,15 @@ import org.testng.annotations.AfterTest;
 
 public class Topic_04_TextBox_TextArea {
 	WebDriver driver;
-	String customerName, gender, dateOfBirth, address, city, state, pin, phone, email, password;
+	String customerName, gender, dateOfBirth, address, city, state, pin, phone, email, password, customerID;
+	String editAddress, editCity, editState, editPin, editPhone, editEmail;
 	
 	public int randomNumber() {
 		Random rand = new Random();
 		return rand.nextInt(10000);
 	}
 	
-	//lacator element
+	//locator element
 	By customerNameTextbox = By.xpath("//input[@name='name']");
 	By genderRadioButton= By.xpath("//input[@value='m']");
 	By dateOfBirthTextbox = By.xpath("//input[@name='dob']");
@@ -54,9 +55,10 @@ public class Topic_04_TextBox_TextArea {
 	//Verify HomePage được hiển thị thành công
 	Assert.assertTrue(driver.findElement(By.xpath("//marquee[text()=\"Welcome To Manager's Page of Guru99 Bank\"]")).isDisplayed());
 	
+	//data create
 	customerName = "Selenium";
 	gender = "male";
-	dateOfBirth = "01/01/1999";
+	dateOfBirth = "1999-01-01";
 	address = "123 Nguyen Van Linh";
 	city = "Da Nang";
 	state = "Hai Chau";
@@ -64,6 +66,15 @@ public class Topic_04_TextBox_TextArea {
 	phone = "0123456789";
 	email = "trinh"+randomNumber()+"@gmail.com";
 	password = "123456";
+	
+	//data edit
+	editAddress = "321 Phan Chau Trinh";
+	editCity = "Ha Noi";
+	editState = "Hoan Kiem";
+	editPin = "090909";
+	editPhone = "0909123123";
+	editEmail = "automation"+randomNumber()+"@gmail.com";
+	
   }
   
   @Test
@@ -83,8 +94,8 @@ public class Topic_04_TextBox_TextArea {
 	 driver.findElement(passwordTextbox).sendKeys(password);
 	 driver.findElement(submitButton).click();
 	 
+	//Verify tất cả thông tin được tạo mới thành công
 	 Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Customer Registered Successfully!!!']")).isDisplayed());
-	 
 	 Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Customer Name']/following-sibling::td")).getText(), customerName);
 	 Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Gender']/following-sibling::td")).getText(), gender);
 	 Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Birthdate']/following-sibling::td")).getText(), dateOfBirth);
@@ -95,10 +106,41 @@ public class Topic_04_TextBox_TextArea {
 	 Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile No.']/following-sibling::td")).getText(), phone);
 	 Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Email']/following-sibling::td")).getText(), email);
 	 
+	 customerID = driver.findElement(By.xpath("//td[text()='Customer ID']/following-sibling::td")).getText();
+	 
   }  
   
   @Test
   public void TC_02_edit_Customer() {
+	  driver.findElement(By.xpath("//a[text()='Edit Customer']")).click();
+	  
+	  driver.findElement(By.xpath("//input[@name='cusid']")).sendKeys(customerID);
+	  driver.findElement(By.xpath("//input[@name='AccSubmit']")).click();
+	  Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Edit Customer']")).isDisplayed());
+	  
+	  //Nhập giá trị mới tại tất cả các field (ngoại trừ những field bị disable) -> note: user .clear() before
+	  driver.findElement(addressArea).clear();
+	  driver.findElement(addressArea).sendKeys(editAddress);
+	  driver.findElement(cityTextbox).clear();
+	  driver.findElement(cityTextbox).sendKeys(editCity);
+	  driver.findElement(stateTextbox).clear();
+	  driver.findElement(stateTextbox).sendKeys(editState);
+	  driver.findElement(pinTextbox).clear();
+	  driver.findElement(pinTextbox).sendKeys(editPin);
+	  driver.findElement(phoneTextbox).clear();
+	  driver.findElement(phoneTextbox).sendKeys(editPhone);
+	  driver.findElement(emailTextbox).clear();
+	  driver.findElement(emailTextbox).sendKeys(editEmail);
+	  driver.findElement(By.xpath("//input[@value='Submit']")).click();
+	  
+	  //Verify giá trị tất cả các field đúng với dữ liệu sau khi đã Edit thành công
+	  Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Customer details updated Successfully!!!']")).isDisplayed());
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Address']/following-sibling::td")).getText(), editAddress);
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='City']/following-sibling::td")).getText(), editCity);
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='State']/following-sibling::td")).getText(), editState);
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Pin']/following-sibling::td")).getText(), editPin);
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Mobile No.']/following-sibling::td")).getText(), editPhone);
+	  Assert.assertEquals(driver.findElement(By.xpath("//td[text()='Email']/following-sibling::td")).getText(), editEmail);
 	  
   }
 

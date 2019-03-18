@@ -45,17 +45,17 @@ public class Topic_05_DropdownList {
 	  //Selected Automation Tester n dropdown using selectVisible & Kiểm tra giá trị đã được chọn thành công
 	  jobRoleSelect.selectByVisibleText("Automation Tester");
 	  Assert.assertEquals(jobRoleSelect.getFirstSelectedOption().getText(), "Automation Tester");
-	  Thread.sleep(3000);
+	  Thread.sleep(2000);
 	  
 	  //Selected Manual Tester on dropdown using selectValue
 	  jobRoleSelect.selectByValue("manual");
 	  Assert.assertEquals(jobRoleSelect.getFirstSelectedOption().getText(), "Manual Tester");
-	  Thread.sleep(3000);
+	  Thread.sleep(2000);
 	  
 	  //Selected Mobile Tester on dropdown using selectIndex
 	  jobRoleSelect.selectByIndex(3);
 	  Assert.assertEquals(jobRoleSelect.getFirstSelectedOption().getText(), "Mobile Tester");
-	  Thread.sleep(3000);
+	  Thread.sleep(2000);
 	  
 	  //Check the dropdown  has 5 values
 	  Assert.assertEquals(jobRoleSelect.getOptions().size(), 5);
@@ -68,11 +68,11 @@ public class Topic_05_DropdownList {
 	javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", parentDropDown);
 	waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
 	List<WebElement> allElements = driver.findElements(By.xpath(allItemXpath));
+	
 	for (WebElement childElement : allElements) {
 		if (childElement.getText().equals(expectedValueItem)) {
 			javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", childElement);
 			Thread.sleep(1000);
-			//childElement.click();
 			javascriptExecutor.executeScript("arguments[0].click();", childElement);
 			break;
 		}
@@ -115,6 +115,12 @@ public class Topic_05_DropdownList {
 	  selectItemInCustomDropdown_NotUseClickOfJS("//span[@id='number-button']", "//ul[@id='number-menu']//li[@class='ui-menu-item']/div", "19");
 	  Assert.assertTrue(elementIsDisplayed("//span[@id='number-button']//span[@class='ui-selectmenu-text' and text()='19']"));
 	  
+	  selectItemInCustomDropdown_NotUseClickOfJS("//span[@id='number-button']", "//ul[@id='number-menu']//li[@class='ui-menu-item']/div", "1");
+	  Assert.assertTrue(elementIsDisplayed("//span[@id='number-button']//span[@class='ui-selectmenu-text' and text()='1']"));
+	  
+	  selectItemInCustomDropdown_NotUseClickOfJS("//span[@id='number-button']", "//ul[@id='number-menu']//li[@class='ui-menu-item']/div", "12");
+	  Assert.assertTrue(elementIsDisplayed("//span[@id='number-button']//span[@class='ui-selectmenu-text' and text()='12']"));
+	  
   }
   
   @Test
@@ -122,6 +128,7 @@ public class Topic_05_DropdownList {
 	  driver.get("https://material.angular.io/components/select/examples");
 	  
 	  selectItemInCustomDropdown("//mat-select[@placeholder='State']", "//mat-option/span", "Michigan");
+
 	  Assert.assertTrue(elementIsDisplayed("//div[@class='mat-select-value']//span[text()='Michigan']"));
 	  
 	  selectItemInCustomDropdown("//mat-select[@placeholder='State']", "//mat-option/span", "Wyoming");

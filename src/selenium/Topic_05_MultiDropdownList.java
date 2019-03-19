@@ -38,7 +38,7 @@ public class Topic_05_MultiDropdownList {
 	  waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
 	  
 	  List <WebElement> allItems = driver.findElements(By.xpath(allItemXpath));
-	  System.out.println("Number of element in dropdown: "+ allItems.size());
+	  System.out.println("Number of elements in dropdown: "+ allItems.size());
 	  
 	  for(WebElement childElement:allItems) {
 		  //January-April-July
@@ -50,7 +50,7 @@ public class Topic_05_MultiDropdownList {
 				  Thread.sleep(1500);
 				  
 				  List <WebElement> itemSelected = driver.findElements(By.xpath("//li[@class='selected']//input"));
-				  System.out.println("Number of Items selected: "+itemSelected.size());
+				  System.out.println("Number of Items is selected: "+itemSelected.size());
 				  if(expectedValueItem.length == itemSelected.size()) {
 					  break;
 				  }
@@ -58,6 +58,34 @@ public class Topic_05_MultiDropdownList {
 		  }
 	  }
   }
+  
+  public void selectMultiCountry(String parentXpath, String allItemXpath, String[] expectedValueItem) throws Exception {
+	  WebElement parentDropdown = driver.findElement(By.xpath(parentXpath));
+	  javascriptExecutor.executeScript("arguments[0].click();", parentDropdown);
+	  
+	  waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
+	  
+	  List <WebElement> allItems = driver.findElements(By.xpath(allItemXpath));
+	  System.out.println("Number of elements in dropdown: "+ allItems.size());
+	  
+	  for(WebElement childElement:allItems) {
+		  for(String item:expectedValueItem) {
+			  if(childElement.getText().equals(item)) {
+				  javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", childElement);
+				  Thread.sleep(1500);
+				  javascriptExecutor.executeScript("arguments[0].click();", childElement);
+				  Thread.sleep(1500);
+				  
+				  List <WebElement> itemSelected = driver.findElements(By.xpath("//div[@class='ui fluid multiple search selection dropdown upward active visible']//input[@name='country']/following-sibling::a"));
+				  System.out.println("Number of Items is selected: "+itemSelected.size());
+				  if(expectedValueItem.length == itemSelected.size()) {
+					  break;
+				  } 
+			  }
+		  }
+	  }
+  }
+  
   public boolean checkItemSelected(String[] itemSelectedText) {
 	  List <WebElement> itemSelected = driver.findElements(By.xpath("//li[@class='selected']//input"));
 	  int numberItemSelected = itemSelected.size();
@@ -78,6 +106,26 @@ public class Topic_05_MultiDropdownList {
 	  }
   }
   
+  public boolean checkItemSelectedInCountry(String[] itemSelectedText) {
+	  List <WebElement> itemSelected = driver.findElements(By.xpath("//div[@class='ui fluid multiple search selection dropdown active visible']//input[@name='country']/following-sibling::a"));
+	  int numberItemSelected = itemSelected.size();
+	  
+	  String allItemSelectedText = driver.findElement(By.xpath("//div[@class='ui fluid multiple search selection dropdown active visible']")).getText();
+	  System.out.println("Text choosen: "+ allItemSelectedText);
+			  
+	  if(numberItemSelected >= 1 ) {
+		  for(String item: itemSelectedText) {
+			  if(allItemSelectedText.contains(item)) {
+				  break;
+			 }
+		  }
+		  return true;
+	  }
+	  else {
+		  System.out.println("You not choose item");
+		  return false;
+	  }
+  }
   
  // @Test
   public void TC_01_CustomMultiSelectDropdownList() throws Exception {
@@ -103,24 +151,25 @@ public class Topic_05_MultiDropdownList {
   
   @Test
   public void TC_02_CustomMultiSelectDropdownList_Bai2() throws Exception {
-	  driver.get("http://multiple-select.wenzhixin.net.cn/examples/#basic.html");
-	  By contentIframeXpath = By.xpath("//div[@class='content']//iframe");
-	  
-	  String[] items = {"January", "April", "July"};
-	  String[] newItems = {"January", "April", "July", "October", "December"};
+	  driver.get("https://semantic-ui.com/modules/dropdown.html");
+	  By contentIframeXpath = By.xpath("//iframe[@class='github']");
+  
+	  String[] items = {"England", "American Samoa", "European Union"};
+	  String[] newItems = {"American Samoa", "Algeria", "Aland Islands", "French Guiana", "Vietnam"};
 	  
 	  WebElement contentIframe = driver.findElement(contentIframeXpath);
 	  driver.switchTo().frame(contentIframe);
 	  
-	  selectMultiItemInDropdown("//button[@class='ms-choice']", "//div[@class='ms-drop bottom']//span", items);
-	  Assert.assertTrue(checkItemSelected(items));
+	  selectMultiCountry("//*[@id='example']/div[4]/div/div[2]/div[4]/div[1]/div[10]/div[2]/div[1]", "//div[@class='ui fluid multiple search selection dropdown active visible']//div[@class='item']", items);
+	  //Assert.assertTrue(checkItemSelected(items));
 	  
-	  driver.navigate().refresh();
+	/*  driver.navigate().refresh();
 	  WebElement contentIframeRefresh = driver.findElement(contentIframeXpath);
 	  driver.switchTo().frame(contentIframeRefresh);
 	  
-	  selectMultiItemInDropdown("//button[@class='ms-choice']", "//div[@class='ms-drop bottom']//span", newItems );
-	  Assert.assertTrue(checkItemSelected(newItems));
+	  selectMultiCountry("//div[@class='ui fluid multiple search selection dropdown active visible']", "//div[@class='ui fluid multiple search selection dropdown active visible']//div[@class='item']", newItems );
+	  Assert.assertTrue(checkItemSelected(newItems));*/
+
   }
   
   @AfterTest

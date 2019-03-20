@@ -60,8 +60,8 @@ public class Topic_05_MultiDropdownList {
   }
   
   public void selectMultiCountry(String parentXpath, String allItemXpath, String[] expectedValueItem) throws Exception {
-	  WebElement parentDropdown = driver.findElement(By.xpath(parentXpath));
-	  javascriptExecutor.executeScript("arguments[0].click();", parentDropdown);
+	  WebElement countryDropdown = driver.findElement(By.xpath(parentXpath));
+	  javascriptExecutor.executeScript("arguments[0].click();", countryDropdown);
 	  
 	  waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
 	  
@@ -76,7 +76,7 @@ public class Topic_05_MultiDropdownList {
 				  javascriptExecutor.executeScript("arguments[0].click();", childElement);
 				  Thread.sleep(1500);
 				  
-				  List <WebElement> itemSelected = driver.findElements(By.xpath("//div[@class='ui fluid multiple search selection dropdown upward active visible']//input[@name='country']/following-sibling::a"));
+				  List <WebElement> itemSelected = driver.findElements(By.xpath("//a[@class='ui label transition visible']"));
 				  System.out.println("Number of Items is selected: "+itemSelected.size());
 				  if(expectedValueItem.length == itemSelected.size()) {
 					  break;
@@ -106,28 +106,8 @@ public class Topic_05_MultiDropdownList {
 	  }
   }
   
-  public boolean checkItemSelectedInCountry(String[] itemSelectedText) {
-	  List <WebElement> itemSelected = driver.findElements(By.xpath("//div[@class='ui fluid multiple search selection dropdown active visible']//input[@name='country']/following-sibling::a"));
-	  int numberItemSelected = itemSelected.size();
-	  
-	  String allItemSelectedText = driver.findElement(By.xpath("//div[@class='ui fluid multiple search selection dropdown active visible']")).getText();
-	  System.out.println("Text choosen: "+ allItemSelectedText);
-			  
-	  if(numberItemSelected >= 1 ) {
-		  for(String item: itemSelectedText) {
-			  if(allItemSelectedText.contains(item)) {
-				  break;
-			 }
-		  }
-		  return true;
-	  }
-	  else {
-		  System.out.println("You not choose item");
-		  return false;
-	  }
-  }
   
- // @Test
+@Test
   public void TC_01_CustomMultiSelectDropdownList() throws Exception {
 	  driver.get("http://multiple-select.wenzhixin.net.cn/examples/#basic.html");
 	  By contentIframeXpath = By.xpath("//div[@class='content']//iframe");
@@ -150,26 +130,17 @@ public class Topic_05_MultiDropdownList {
   }
   
   @Test
-  public void TC_02_CustomMultiSelectDropdownList_Bai2() throws Exception {
+  public void TC_02_SelectMultiCountry() throws Exception {
 	  driver.get("https://semantic-ui.com/modules/dropdown.html");
-	  By contentIframeXpath = By.xpath("//iframe[@class='github']");
   
 	  String[] items = {"England", "American Samoa", "European Union"};
 	  String[] newItems = {"American Samoa", "Algeria", "Aland Islands", "French Guiana", "Vietnam"};
 	  
-	  WebElement contentIframe = driver.findElement(contentIframeXpath);
-	  driver.switchTo().frame(contentIframe);
+	  selectMultiCountry("//div[contains(text(),'Dropdowns can support')]/following-sibling::div", "//div[@class='menu transition visible']//div", items);
 	  
-	  selectMultiCountry("//*[@id='example']/div[4]/div/div[2]/div[4]/div[1]/div[10]/div[2]/div[1]", "//div[@class='ui fluid multiple search selection dropdown active visible']//div[@class='item']", items);
-	  //Assert.assertTrue(checkItemSelected(items));
+	  driver.navigate().refresh();
+	  selectMultiCountry("//div[contains(text(),'Dropdowns can support')]/following-sibling::div", "//div[@class='menu transition visible']//div", newItems);
 	  
-	/*  driver.navigate().refresh();
-	  WebElement contentIframeRefresh = driver.findElement(contentIframeXpath);
-	  driver.switchTo().frame(contentIframeRefresh);
-	  
-	  selectMultiCountry("//div[@class='ui fluid multiple search selection dropdown active visible']", "//div[@class='ui fluid multiple search selection dropdown active visible']//div[@class='item']", newItems );
-	  Assert.assertTrue(checkItemSelected(newItems));*/
-
   }
   
   @AfterTest

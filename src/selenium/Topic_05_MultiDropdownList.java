@@ -61,6 +61,7 @@ public class Topic_05_MultiDropdownList {
   
   public void selectMultiCountry(String parentXpath, String allItemXpath, String[] expectedValueItem) throws Exception {
 	  WebElement countryDropdown = driver.findElement(By.xpath(parentXpath));
+	  //if
 	  javascriptExecutor.executeScript("arguments[0].click();", countryDropdown);
 	  
 	  waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
@@ -76,11 +77,11 @@ public class Topic_05_MultiDropdownList {
 				  javascriptExecutor.executeScript("arguments[0].click();", childElement);
 				  Thread.sleep(1500);
 				  
-				  List <WebElement> itemSelected = driver.findElements(By.xpath("//a[@class='ui label transition visible']"));
-				  System.out.println("Number of Items is selected: "+itemSelected.size());
-				  if(expectedValueItem.length == itemSelected.size()) {
-					  break;
-				  } 
+				  //List <WebElement> itemSelected = driver.findElements(By.xpath("//a[@class='ui label transition visible']"));
+				  //System.out.println("Number of Items is selected: "+itemSelected.size());
+				  /*if(expectedValueItem.length == itemSelected.size()) {
+					  //break;
+				  } */
 			  }
 		  }
 	  }
@@ -93,10 +94,11 @@ public class Topic_05_MultiDropdownList {
 	  String allItemSelectedText = driver.findElement(By.xpath("//button[@class='ms-choice']/span")).getText();
 	  System.out.println("Text choosen: "+ allItemSelectedText);
 			  
-	  if(numberItemSelected <= 3 && numberItemSelected > 0 ) {
+	  if(numberItemSelected <= 3 && numberItemSelected > 0 && (itemSelected.size()==itemSelectedText.length)) {
 		  for(String item: itemSelectedText) {
 			  if(allItemSelectedText.contains(item)) {
-				  break;
+				  //break;
+				  
 			  }
 		  }
 		  return true;
@@ -107,7 +109,7 @@ public class Topic_05_MultiDropdownList {
   }
   
   
-@Test
+//@Test
   public void TC_01_CustomMultiSelectDropdownList() throws Exception {
 	  driver.get("http://multiple-select.wenzhixin.net.cn/examples/#basic.html");
 	  By contentIframeXpath = By.xpath("//div[@class='content']//iframe");

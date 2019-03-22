@@ -12,6 +12,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -23,7 +24,9 @@ public class Topic_07_User_Interaction {
 	
   @BeforeTest
   public void beforeTest() {
+	  //System.setProperty("webdriver.chrome.driver", ".\\lib\\chromedriver.exe");
 	  driver = new FirefoxDriver();
+	  //driver = new ChromeDriver();
 	  action = new Actions(driver);
 	  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	  driver.manage().window().maximize();
@@ -57,7 +60,7 @@ public class Topic_07_User_Interaction {
 	  Assert.assertEquals(ItemsSelected.size(), 4);
   }
   
-  @Test
+  //@Test
   public void TC_02_ClickAndHold_Random() {
 	  driver.get("http://jqueryui.com/resources/demos/selectable/display-grid.html");
 	  
@@ -87,6 +90,49 @@ public class Topic_07_User_Interaction {
 	  Assert.assertEquals(verifyAccept.getText(), "The Button was double-clicked.");
 	  
 	  verifyAccept.accept();
+  }
+  
+  //@Test
+  //Testscript này chỉ dùng đc trên chrome
+  public void TC_04_RightClick() throws Exception {
+	  driver.get("http://swisnl.github.io/jQuery-contextMenu/demo.html");
+	  
+	  WebElement rightCLickBtn = driver.findElement(By.xpath("//span[text()='right click me']"));
+	  action.contextClick(rightCLickBtn).perform();
+	  
+	  //hover
+	  WebElement quitBtn = driver.findElement(By.xpath("//li[contains(@class, 'context-menu-icon-quit')]"));
+	  action.moveToElement(quitBtn).perform();
+	  
+	  //check có visible and hover
+	  //thứ tự của class xpath trên FF quit-visible-hover, Chrome: quit-hover-visible
+	  Assert.assertTrue(driver.findElement(By.xpath("//li[contains(@class, 'context-menu-icon-quit') and contains(@class,'context-menu-hover') and contains(@class,'context-menu-visible')]")).isDisplayed());
+	  
+	  quitBtn.click();
+	  //alert này chỉ bật cho chrome, firefox k support
+	  Assert.assertEquals(driver.switchTo().alert().getText(), "clicked: quit");
+	  driver.switchTo().alert().accept();
+	  
+	  //sleep để có time nó verify 
+	  Thread.sleep(1500);
+	  //check xong thao tác, element k còn hover và visible nữa
+	  Assert.assertFalse(quitBtn.isDisplayed());
+	  
+  }
+  
+  @Test
+  public void TC_05_DragAndDrop() throws Exception {
+	  
+	  driver.get("https://demos.telerik.com/kendo-ui/dragdrop/angular");
+	  
+	  WebElement smallCircle = driver.findElement(By.xpath("//div[@id='draggable']"));
+	  WebElement bigCircle = driver.findElement(By.xpath("//div[@id='droptarget']"));
+	  
+	  action.dragAndDrop(smallCircle, bigCircle).perform();
+	  Thread.sleep(2000);
+	  
+	  Assert.assertEquals(bigCircle.getText(), "You did great!");
+	  
   }
   
   @AfterTest

@@ -30,7 +30,7 @@ public class Topic_05_MultiDropdown_common {
   }
 
   public void selectMultiItemInDropdown(String parentXpath,String allItemXpath, String[] expectedValue) throws Exception {
-  	  // 1: click vào cái dropdown cho nó xổ hết tất cả các giá trị ra
+  	  
 	  WebElement parentDropdown = driver.findElement(By.xpath(parentXpath));
 	  if(parentDropdown.isDisplayed()) {
 		  parentDropdown.click();
@@ -38,19 +38,19 @@ public class Topic_05_MultiDropdown_common {
 	  else {
 		  javascriptExecutor.executeScript("arguments[0].click();", parentDropdown);
 	  }
-	  // 2: chờ cho tất cả các giá trị trong dropdown được load ra thành công
+	  //chờ cho tất cả các giá trị trong dropdown được load ra thành công
 	  waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemXpath)));
 	  List<WebElement> allItems = driver.findElements(By.xpath(allItemXpath));
 	  System.out.println("size is: = " + allItems.size());
-	  // Duyệt qa hết tất cả các phần tử cho đến khi thỏa mãn điều kiện
+	  
 	  for (WebElement  childElement : allItems) {
 		  // "January, April, July"
 		  for (String item : expectedValue) {
 			  if(childElement.getText().equals(item)) {
-				  // 3: scroll đến item cần chọn (nếu như item cần chọn có thể nhìn thấy thì ko cần scroll)
+				  
 				  javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", childElement);
 				  Thread.sleep(1500);
-				  //4 Click item can chon
+				  
 				  if(childElement.isDisplayed()) {
 					  childElement.click();
 				  }

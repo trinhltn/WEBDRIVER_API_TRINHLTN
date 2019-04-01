@@ -38,7 +38,7 @@ public class Topic_08_Popup_Frame_Iframe {
 	   * case 01: Nếu có display -> close -> next step
 	   * case 02: Không display -> chạy bth
 	   */
-	  List <WebElement> notificationIframe = driver.findElements(By.xpath("//iframe[@id='vizury-notification-template']"));
+	  /*List <WebElement> notificationIframe = driver.findElements(By.xpath("//iframe[@id='vizury-notification-template']"));
 	  int notificationIframeSize = notificationIframe.size();
 	  System.out.println("Size of notification iframe: " + notificationIframeSize);
 	  
@@ -52,11 +52,17 @@ public class Topic_08_Popup_Frame_Iframe {
 		  jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='div-close']")));
 		  System.out.println("Close popup");
 		  
-	  }
+	  }*/
+	  
 
-	  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	  //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	  //về Top Window
-	  driver.switchTo().defaultContent();
+	  //driver.switchTo().defaultContent();
+	  
+	  WebElement imgPopup = driver.findElement(By.xpath("//img[@class='popupbanner']"));
+	  if(imgPopup.isDisplayed()) {
+		  driver.findElement(By.xpath("//img[@class='popupCloseButton']")).click();
+	  }
 	  
 	  WebElement lookingforIframe = driver.findElement(By.xpath("//div[@class='flipBannerWrap']//iframe"));
 	  driver.switchTo().frame(lookingforIframe);

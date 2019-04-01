@@ -29,7 +29,7 @@ public class Topic_09_HandleWindowsTabs {
 	  
   }
   
-  @Test
+  //@Test
   public void TC_01() {
 	  //parent Window
 	  driver.get("https://daominhdam.github.io/basic-form/index.html");
@@ -57,7 +57,8 @@ public class Topic_09_HandleWindowsTabs {
 	  String parentID = driver.getWindowHandle();
 	  
 	  //handle close popup
-	  driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+	  
+	  /*driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	  List <WebElement> notificationIframe = driver.findElements(By.xpath("//iframe[@id='vizury-notification-template']"));
 	  int notificationIframeSize = notificationIframe.size();
 	  System.out.println("Size of notification iframe: " + notificationIframeSize);
@@ -71,6 +72,11 @@ public class Topic_09_HandleWindowsTabs {
 		  //close img
 		  jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='div-close']")));
 		  System.out.println("Close popup");
+	  }*/
+	  
+	  WebElement imgPopup = driver.findElement(By.xpath("//img[@class='popupbanner']"));
+	  if(imgPopup.isDisplayed()) {
+		  driver.findElement(By.xpath("//img[@class='popupCloseButton']")).click();
 	  }
 	  
 	  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -101,7 +107,7 @@ public class Topic_09_HandleWindowsTabs {
 	  Assert.assertEquals(driver.getTitle(), "HDFC Bank: Personal Banking Services");
   }
   
-  @Test
+  //@Test
   public void TC_03_Buy_Mobile() throws Exception {
 	  driver.get("http://live.guru99.com/index.php/");
 	  String parentID = driver.getWindowHandle();

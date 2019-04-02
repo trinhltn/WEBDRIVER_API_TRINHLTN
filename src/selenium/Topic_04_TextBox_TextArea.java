@@ -48,8 +48,8 @@ public class Topic_04_TextBox_TextArea {
 	driver.get("http://demo.guru99.com/v4/");
 	
 	//login
-	driver.findElement(By.xpath("//input[@name='uid']")).sendKeys("mngr183806");
-	driver.findElement(By.xpath("//input[@name='password']")).sendKeys("uzEmEbU");
+	driver.findElement(By.xpath("//input[@name='uid']")).sendKeys("mngr187630");
+	driver.findElement(By.xpath("//input[@name='password']")).sendKeys("rUzUdUv");
 	driver.findElement(By.xpath("//input[@name='btnLogin']")).click();
 	
 	//Verify HomePage được hiển thị thành công

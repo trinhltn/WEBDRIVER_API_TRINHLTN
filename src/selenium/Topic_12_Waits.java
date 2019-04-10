@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeTest;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -141,7 +143,7 @@ public class Topic_12_Waits {
       return date;
   }
   
-  @Test
+  //@Test
   public void TC_04_ExplicitWait_pass() {
 	  
 	  driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);  
@@ -171,6 +173,44 @@ public class Topic_12_Waits {
 	  explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(startBtn));
 	  System.out.println("Start invisible startBtn: "+getDateTimeSecond());
 	  
+  }
+  
+ // @Test
+  public void TC_05_ExplicitWait_DateTimePicker() {
+	  driver.get("https://demos.telerik.com/aspnet-ajax/ajaxloadingpanel/functionality/explicit-show-hide/defaultcs.aspx");
+	  
+	  //02 - Wait cho "Date Time Picker" được hiển thị
+	  By contentWrapper = By.xpath("//div[@class='contentWrapper']");
+	  explicitWait = new WebDriverWait(driver, 5);
+	  explicitWait.until(ExpectedConditions.visibilityOfElementLocated(contentWrapper));
+	  
+	  //03 - In ra ngày đã chọn (Before AJAX call) -> hiện tại chưa chọn nên in ra = "No Selected Dates to display."
+	  By noSelectDateText = By.xpath("//span[@id='ctl00_ContentPlaceholder1_Label1']");
+	  System.out.println("Ngày đã chọn: "+driver.findElement(noSelectDateText).getText());
+	  
+	  //04 - Chọn ngày hiện tại (hoặc 1 ngày bất kì tương ứng trong tháng/ năm hiện tại)
+	  
+	  
+  }
+  
+  @Test
+  public void TC() {
+	  CurrentDate();
+  }
+  
+  public void CurrentDate() {
+	  LocalDate localDate = LocalDate.now();
+      System.out.println(DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate));
+      String currentDate = DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate);
+      
+      String[] splits = currentDate.split("/");
+      String year = splits[0];
+      System.out.println(year);
+      String month = splits[1];
+      System.out.println(month);
+      String date = splits[2];
+      System.out.println(date);
+      
   }
   
   @AfterTest

@@ -1,20 +1,30 @@
 package selenium;
 
 import org.testng.annotations.Test;
+
+import com.google.common.base.Function;
+
 import org.testng.annotations.BeforeTest;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.FluentWait;
+
+import java.time.Duration;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
@@ -23,8 +33,13 @@ public class Topic_12_Waits {
 	By startBtn = By.xpath("//div[@id=\"start\"]//button");
 	By imgLoading = By.xpath("//div[@id='loading']//img");
 	By helloText = By.xpath("//div[@id='finish']//h4[text()='Hello World!']");
+	By loaderAjax = By.xpath("//div[@class='raDiv']");
 	
 	WebDriverWait explicitWait;
+	public String date;
+	public String month;
+	public String year;
+	
 
   @BeforeTest
   public void beforeTest() {
@@ -175,7 +190,7 @@ public class Topic_12_Waits {
 	  
   }
   
- // @Test
+  //@Test
   public void TC_05_ExplicitWait_DateTimePicker() {
 	  driver.get("https://demos.telerik.com/aspnet-ajax/ajaxloadingpanel/functionality/explicit-show-hide/defaultcs.aspx");
 	  
@@ -189,13 +204,24 @@ public class Topic_12_Waits {
 	  System.out.println("Ngày đã chọn: "+driver.findElement(noSelectDateText).getText());
 	  
 	  //04 - Chọn ngày hiện tại (hoặc 1 ngày bất kì tương ứng trong tháng/ năm hiện tại)
-	  
-	  
-  }
-  
-  @Test
-  public void TC() {
 	  CurrentDate();
+	  driver.findElement(By.xpath("//a[text()='"+date+"']")).click();
+	  
+	  //05 - Wait cho đến khi "loader ajax" không còn visible (sử dụng: invisibility)
+	  explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(loaderAjax));
+	  
+	  //06 - Wait cho selected date được visible ((sử dụng: visibility)
+	  By selectedDate = By.xpath("//td[contains(@class,'rcSelected')]//a[text()='"+date+"']");
+	  explicitWait.until(ExpectedConditions.visibilityOfElementLocated(selectedDate));
+	  
+	  //07 - get ngày đã chọn ở tile để assert = Friday, April 12, 2019
+	  String textDateSelected = driver.findElement(By.xpath("//td[contains(@class,'rcSelected')]")).getAttribute("title");
+	  System.out.println("textDateSelected: "+textDateSelected);
+	 
+	  //08 - Verify ngày đã chọn bằng = Friday, April 12, 2019
+	  WebElement textDisplay = driver.findElement(By.xpath("//span[@id='ctl00_ContentPlaceholder1_Label1']"));
+	  Assert.assertEquals(textDisplay.getText(), textDateSelected);
+	  
   }
   
   public void CurrentDate() {
@@ -204,13 +230,44 @@ public class Topic_12_Waits {
       String currentDate = DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate);
       
       String[] splits = currentDate.split("/");
-      String year = splits[0];
-      System.out.println(year);
-      String month = splits[1];
-      System.out.println(month);
-      String date = splits[2];
+      this.year = splits[0];
+      //System.out.println(year);
+      this.month = splits[1];
+      //System.out.println(month);
+      this.date = splits[2];
       System.out.println(date);
       
+  }
+  
+  @Test
+  public void TC_06_Fluent_Wait() {
+	  driver.get("https://daominhdam.github.io/fluent-wait/");
+	  
+	  //02 - Wait cho đến khi countdown time được visible
+	  WebElement countdown =  driver.findElement(By.xpath("//div[@id='javascript_countdown_time']"));
+	  explicitWait = new WebDriverWait(driver, 5);
+	  explicitWait.until(ExpectedConditions.visibilityOf(countdown));
+	  
+	  //03 - Sử dụng Fluent wait để: Mỗi 1s kiểm tra countdount= 00 được xuất hiện trên page hay chưa (giây đếm ngược về 00)
+	  // Khởi tạo Fluent wait
+	  new FluentWait<WebElement>(countdown)
+         // Tổng time wait là 15s
+         .withTimeout(Duration.ofSeconds(15))
+          // Tần số mỗi 1s check 1 lần
+          .pollingEvery(Duration.ofSeconds(1))
+         // Nếu gặp exception là find ko thấy element sẽ bỏ  qua
+          .ignoring(NoSuchElementException.class)
+          // Kiểm tra điều kiện
+          .until(new Function<WebElement,Boolean>() {
+              public Boolean apply(WebElement element) {
+                 // Kiểm tra điều kiện countdount = 00
+                 boolean flag =  element.getText().endsWith("00");
+                 System.out.println("Time = " +  element.getText());
+                 // return giá trị cho function apply
+                 return flag;
+              }
+         });
+	  
   }
   
   @AfterTest

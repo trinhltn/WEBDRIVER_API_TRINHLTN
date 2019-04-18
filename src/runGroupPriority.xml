@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="false">
+  <test name="Test">
+  	<groups>
+  		<run>
+  			<include name = "add" />
+  			<include name = "delete" />
+  		</run>
+  	</groups>
+    <classes>
+      <class name="TestNG.TestNG_02_Group_Priority"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

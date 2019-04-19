@@ -4,21 +4,21 @@
   <test name="Run on CHROME browser">
     <parameter name="browser" value="chrome"/>
 	    <classes>
-	      <class name="TestNG.TestNG_04_MultiBrowser"/>
+	      <class name="TestNG.TestNG_05_Loop"/>
 	    </classes>
   </test> 
   
     <test name="Run on FIREFOX browser">
     <parameter name="browser" value="firefox"/>
     <classes>
-      <class name="TestNG.TestNG_04_MultiBrowser"/>
+      <class name="TestNG.TestNG_05_Loop"/>
     </classes>
   </test> 
   
     <test name="Run on CHROME HEADLESS browser">
     <parameter name="browser" value="headless"/>
     <classes>
-      <class name="TestNG.TestNG_04_MultiBrowser"/>
+      <class name="TestNG.TestNG_05_Loop"/>
     </classes>
   </test> 
   

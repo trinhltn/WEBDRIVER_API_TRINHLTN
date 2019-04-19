@@ -1,5 +1,9 @@
 package TestNG;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -8,15 +12,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 
-public class TestNG_04_MultiBrowser {
-	WebDriver driver;
+public class TestNG_05_Loop {
+WebDriver driver;
 	
 	@Parameters("browser")
 	 @BeforeTest
@@ -46,7 +45,7 @@ public class TestNG_04_MultiBrowser {
 	  driver.get("http://live.guru99.com/");
 	  }
 		
-	  @Test
+	  @Test(invocationCount = 3)
 	  public void TC_01_Login() {
 		  driver.findElement(By.xpath("//header[@id='header']//span[text()='Account']")).click();
 		  driver.findElement(By.xpath("//a[text()='Log In']")).click();

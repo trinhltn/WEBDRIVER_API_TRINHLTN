@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Run package TestNG" parallel="tests">
+  <test name="Test">
+  <parameter name="browser" value="chrome"/>
+  <parameter name="browser" value="firefox"/>
+  <parameter name="browser" value="headless"/>
+    <packages>
+    	<package name="TestNG" />
+    </packages>
+  </test>
+</suite> 
